@@ -6,9 +6,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.bookshelf.data.Book;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -25,6 +33,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String BOOKS_COLUMN_DESCRIPTION = "description";
     public static final String BOOKS_COLUMN_READED = "readed";
     public static final String BOOKS_COLUMN_USERID = "userId";
+    public static final String BOOKS_COLUMN_AUTHOR = "author";
+    public static final String BOOKS_COLUMN_REVIEW = "review";
     private HashMap hp;
 
     public DBHelper(Context context) {
@@ -35,7 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table users (id integer primary key, tag text,name text,registration text)");
-        db.execSQL("create table books (id integer primary key, title text,description text,readed text,userId text)");
+        db.execSQL("create table books (id integer primary key, title text, author text, description text,readed text,userId text, review text)");
     }
 
     @Override
@@ -51,7 +61,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("name", name);
         contentValues.put("tag", tag);
         contentValues.put("registration", registration);
-        db.insert("users", null, contentValues);
+        db.insert(USERS_TABLE_NAME, null, contentValues);
         return true;
     }
 
@@ -74,7 +84,31 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor getUserData(String tag) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from users where tag="+tag+"", null );
+        String queryString = "select * from " + USERS_TABLE_NAME + " where tag='" + tag + "'";
+        Cursor res =  db.rawQuery(  queryString, null );
         return res;
+    }
+
+    public List<Book> getUserBooks(String tag) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = "select * from " + BOOKS_TABLE_NAME + " where " + BOOKS_COLUMN_USERID + "='" + tag + "'";
+        Cursor res =  db.rawQuery(  queryString, null );
+
+        List<Book> userBookList = new ArrayList<Book>();
+
+        if(res != null && res.getCount()>0){
+            for(res.moveToFirst(); !res.isAfterLast(); res.moveToNext()){
+                Book currentBook = new Book();
+                currentBook.setTitle( res.getString(res.getColumnIndex(BOOKS_COLUMN_TITLE)));
+                currentBook.setAuthor( res.getString(res.getColumnIndex(BOOKS_COLUMN_AUTHOR)));
+                currentBook.setReaded(res.getString(res.getColumnIndex(BOOKS_COLUMN_READED)));
+                currentBook.setDescription(res.getString(res.getColumnIndex(BOOKS_COLUMN_DESCRIPTION)));
+                currentBook.setReview(res.getString(res.getColumnIndex(BOOKS_COLUMN_REVIEW)));
+
+
+                userBookList.add(currentBook);
+            }
+        }
+        return userBookList;
     }
 }
