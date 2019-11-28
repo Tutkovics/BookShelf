@@ -51,6 +51,8 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
         return books.size();
     }
 
+
+
     public interface BookItemClickListener{
         void onItemChanged(Book item);
     }

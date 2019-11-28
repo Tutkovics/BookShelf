@@ -11,6 +11,14 @@ public class Book {
     // Only readed books
     public String review;
 
+    public Book(){
+        this.author = "";
+        this.title = "";
+        this.description = "";
+        this.review = "";
+        this.isReaded = false;
+    }
+
 
     public void setTitle(String string) {
         this.title = string;

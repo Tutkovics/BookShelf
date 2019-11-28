@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">BookShelf</string>
     <string name="title_activity_book_list">BookListActivity</string>
+    <string name="new_book_item">New Book</string>
+    <string name="ok">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="title">Title</string>
+    <string name="author">Author</string>
+    <string name="description">Description</string>
+    <string name="review">Review</string>
+    <string name="already_readed">Readed</string>
 </resources>

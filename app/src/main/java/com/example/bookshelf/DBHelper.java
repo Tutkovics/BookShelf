@@ -111,4 +111,25 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return userBookList;
     }
+
+    public boolean insertBook (Book b) {
+        String title = b.title;
+        String author = b.author;
+        String description = b.description;
+        String review = b.review;
+        String readed = b.isReaded ? "true": "false";
+        String userTag = b.userTag;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(BOOKS_COLUMN_TITLE, title);
+        contentValues.put(BOOKS_COLUMN_AUTHOR, author);
+        contentValues.put(BOOKS_COLUMN_DESCRIPTION, description);
+        contentValues.put(BOOKS_COLUMN_REVIEW, review);
+        contentValues.put(BOOKS_COLUMN_READED, readed);
+        contentValues.put(BOOKS_COLUMN_USERID, userTag);
+
+        db.insert(BOOKS_TABLE_NAME, null, contentValues);
+        return true;
+    }
 }

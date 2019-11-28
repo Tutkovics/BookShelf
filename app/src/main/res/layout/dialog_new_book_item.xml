@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dip">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title"/>
+
+    <EditText
+        android:id="@+id/BookTitleEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dip"
+        android:text="@string/author"/>
+
+    <EditText
+        android:id="@+id/BookAuthorEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dip"
+        android:text="@string/description"/>
+
+    <EditText
+        android:id="@+id/BookDescriptionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dip"
+        android:text="@string/review"/>
+
+    <EditText
+        android:id="@+id/ReviewEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+    <EditText
+        android:id="@+id/BookItemIsPurchasedCheckBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"/>
+
+    <CheckBox
+        android:id="@+id/BookReaded"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/already_readed"/>
+
+</LinearLayout>

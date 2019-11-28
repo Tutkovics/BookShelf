@@ -85,7 +85,7 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Profile.this, BookListActivity.class);
-                i.putExtra("nfcTag",tag);
+                //i.putExtra("nfcTag",tag);
                 startActivity(i);
             }
         });
