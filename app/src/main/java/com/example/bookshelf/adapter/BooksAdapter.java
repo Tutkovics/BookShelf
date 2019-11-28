@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bookshelf.DBHelper;
 import com.example.bookshelf.R;
 import com.example.bookshelf.data.Book;
 
@@ -21,9 +22,16 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
     private final List<Book> books;
     private BookItemClickListener listener;
 
-    public BooksAdapter(BookItemClickListener listener){
+/*    public BooksAdapter(BookItemClickListener listener){
         this.listener = listener;
         books = new ArrayList<>();
+
+        books = new DBHelper(this).getUserBooks();
+    }*/
+
+    public BooksAdapter(BookItemClickListener listener){
+         this.listener = listener;
+         books = new ArrayList<>();
     }
 
     @NonNull
@@ -57,6 +65,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
         void onItemChanged(Book item);
     }
 
+
     class BookViewHolder extends RecyclerView.ViewHolder {
         CheckBox readedCheckBox;
         TextView bookAuthorTextView;
@@ -83,5 +92,16 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
                 }
             });
         }
+    }
+
+    public void addItem(Book item) {
+        books.add(item);
+        notifyItemInserted(books.size() - 1);
+    }
+
+    public void update(List<Book> book) {
+        books.clear();
+        books.addAll(book);
+        notifyDataSetChanged();
     }
 }

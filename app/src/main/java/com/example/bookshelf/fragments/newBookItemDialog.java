@@ -79,7 +79,8 @@ public class newBookItemDialog extends DialogFragment {
     }
 
     private boolean isValid() {
-        return (titleEditText.getText().length() > 0) && (authorEditText.getText().length() > 0);
+        return true;
+        //return (titleEditText.getText().length() > 0) && (authorEditText.getText().length() > 0);
     }
 
     private Book getBook() {
@@ -89,6 +90,7 @@ public class newBookItemDialog extends DialogFragment {
         b.description = descriptionEditText.getText().toString();
         b.review = reviewEditText.getText().toString();
         b.isReaded = alreadyReadedCheckBox.isChecked();
+
         // todo get user tag
 /*        userTag = "562E5302";
 

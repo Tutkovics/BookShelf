@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.example.bookshelf.adapter.BooksAdapter;
 import com.example.bookshelf.data.Book;
+import com.example.bookshelf.data.BookListDatabase;
 import com.example.bookshelf.fragments.newBookItemDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -13,7 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,8 +26,10 @@ public class BookListActivity extends AppCompatActivity implements BooksAdapter.
 
     private RecyclerView recyclerView;
     private BooksAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
+    //private RecyclerView.LayoutManager layoutManager;
     private String userTag;
+
+    private BookListDatabase booksDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,26 +46,46 @@ public class BookListActivity extends AppCompatActivity implements BooksAdapter.
             }
         });
 
-        //userTag = getIntent().getStringExtra("nfcTag");
-        userTag = "562E5302";
+        userTag = getIntent().getStringExtra("nfcTag");
+        //userTag = "562E5302";
 
-        // use a linear layout manager
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        booksDatabase = Room.databaseBuilder(
+                getApplicationContext(),
+                BookListDatabase.class,
+                "book-shelf"
+        ).build();
+
+        /*List<Book> b = new DBHelper(this).getUserBooks(userTag);
 
         // specify an adapter (see also next example)
-        adapter = new BooksAdapter(new DBHelper(this).getUserBooks(userTag));
+        adapter = new BooksAdapter(b);
         recyclerView.setAdapter(adapter);
-
+*/
         initRecyclerView();
+        
     }
 
     private void initRecyclerView() {
         recyclerView = findViewById(R.id.BookRecyclerView);
         adapter = new BooksAdapter(this);
-        //loadItemsInBackground();
+        loadItemsInBackground();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+    }
+
+    private void loadItemsInBackground() {
+        new AsyncTask<Void, Void, List<Book>>() {
+
+            @Override
+            protected List<Book> doInBackground(Void... voids) {
+                return booksDatabase.bookDao().getAll();
+            }
+
+            @Override
+            protected void onPostExecute(List<Book> shoppingItems) {
+                adapter.update(shoppingItems);
+            }
+        }.execute();
     }
 
 
@@ -69,33 +94,38 @@ public class BookListActivity extends AppCompatActivity implements BooksAdapter.
     }
 
     @Override
-    public void onItemChanged(Book item) {
-        Toast.makeText(this,"onItemChanged", Toast.LENGTH_LONG).show();
+    public void onItemChanged(final Book item) {
+        new AsyncTask<Void, Void, Boolean>() {
+
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+                booksDatabase.bookDao().update(item);
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean isSuccessful) {
+                Log.d("MainActivity", "Book update was successful");
+            }
+        }.execute();
     }
 
-    @Override
-    public void onBookItemCreated(Book newItem) {
-        newItem.userTag = userTag;
-        DBHelper mydb = new DBHelper(this);
-        mydb.insertBook(newItem);
-        mydb.close();
-        Toast.makeText(this,"Activity reloaded", Toast.LENGTH_LONG).show();
-        finish();
 
-        startActivity(getIntent());
-       /* new AsyncTask<Void, Void, Book>() {
+    @Override
+    public void onBookItemCreated(final Book newItem) {
+        new AsyncTask<Void, Void, Book>() {
 
             @Override
             protected Book doInBackground(Void... voids) {
-                newItem.id = // add to db
+                newItem.userTag = userTag;
+                newItem.id = booksDatabase.bookDao().insert(newItem);
                 return newItem;
             }
 
             @Override
-            protected void onPostExecute(Book b) {
-                adapter.addItem(b);
+            protected void onPostExecute(Book shoppingItem) {
+                adapter.addItem(shoppingItem);
             }
         }.execute();
-    }*/
     }
 }

@@ -49,13 +49,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-
-    <EditText
-        android:id="@+id/BookItemIsPurchasedCheckBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"/>
-
     <CheckBox
         android:id="@+id/BookReaded"
         android:layout_width="match_parent"
