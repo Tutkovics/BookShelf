@@ -45,14 +45,14 @@ public class MainActivity extends AppCompatActivity {
 
         //performIntent(getIntent());
 
-        final Button button = findViewById(R.id.btnProfile);
+        /*final Button button = findViewById(R.id.btnProfile);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent profileIntent = new Intent(MainActivity.this, Profile.class);
                 startActivity(profileIntent);
                 // Code here executes on main thread after user presses button
             }
-        });
+        });*/
 
     }
 

@@ -86,6 +86,13 @@
             android:textSize="20sp"
             android:text="Books" />
 
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="Logout" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,9 @@ public interface BookDao {
     @Query("SELECT * FROM books_table")
     List<Book> getAll();
 
+    @Query("SELECT * FROM books_table WHERE user_tag LIKE :nfcTag")
+    List<Book> getAllBooksFromUser(String nfcTag);
+
     @Insert
     long insert(Book book);
 

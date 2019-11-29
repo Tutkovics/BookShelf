@@ -15,5 +15,27 @@
         android:scaleType="fitCenter"
         tools:ignore="MissingConstraints" /-->
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="469dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="false"
+        android:cropToPadding="true"
+        android:scaleType="center"
+        app:srcCompat="@drawable/bg"
+        tools:layout_editor_absoluteX="-17dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Read NFC tag"
+        android:textColor="#003469"
+        android:textSize="55sp"
+        tools:layout_editor_absoluteX="42dp"
+        tools:layout_editor_absoluteY="193dp"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

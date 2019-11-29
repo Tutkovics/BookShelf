@@ -47,6 +47,7 @@ public class BookListActivity extends AppCompatActivity implements BooksAdapter.
         });
 
         userTag = getIntent().getStringExtra("nfcTag");
+        Toast.makeText(this, "Current user: " + userTag, Toast.LENGTH_LONG).show();
         //userTag = "562E5302";
 
         booksDatabase = Room.databaseBuilder(
@@ -55,12 +56,6 @@ public class BookListActivity extends AppCompatActivity implements BooksAdapter.
                 "book-shelf"
         ).build();
 
-        /*List<Book> b = new DBHelper(this).getUserBooks(userTag);
-
-        // specify an adapter (see also next example)
-        adapter = new BooksAdapter(b);
-        recyclerView.setAdapter(adapter);
-*/
         initRecyclerView();
         
     }
@@ -78,7 +73,7 @@ public class BookListActivity extends AppCompatActivity implements BooksAdapter.
 
             @Override
             protected List<Book> doInBackground(Void... voids) {
-                return booksDatabase.bookDao().getAll();
+                return booksDatabase.bookDao().getAllBooksFromUser(userTag);
             }
 
             @Override
