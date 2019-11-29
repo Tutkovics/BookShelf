@@ -1,6 +1,5 @@
 package com.example.bookshelf;
 
-import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -42,12 +41,12 @@ public class BookListActivity extends AppCompatActivity implements BooksAdapter.
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new newBookItemDialog().show(getSupportFragmentManager(),"Add new book");
+                new newBookItemDialog(null).show(getSupportFragmentManager(),"Add new book");
             }
         });
 
         userTag = getIntent().getStringExtra("nfcTag");
-        Toast.makeText(this, "Current user: " + userTag, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Current user: " + userTag, Toast.LENGTH_LONG).show();
         //userTag = "562E5302";
 
         booksDatabase = Room.databaseBuilder(
@@ -105,6 +104,44 @@ public class BookListActivity extends AppCompatActivity implements BooksAdapter.
         }.execute();
     }
 
+    @Override
+    public void onItemDeleted(final Book item) {
+        new AsyncTask<Void, Void, Book>() {
+
+            @Override
+            protected Book doInBackground(Void... voids) {
+                booksDatabase.bookDao().deleteBook(item);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Book shoppingItem) {
+                Log.d("MainActivity", "Book deleted successfully");
+                loadItemsInBackground();
+            }
+        }.execute();
+    }
+
+    @Override
+    public void onItemEdit(final Book item) {
+        new newBookItemDialog(item).show(getSupportFragmentManager(),"Edit book");
+        onItemDeleted(item);
+        new AsyncTask<Void, Void, Book>() {
+
+            @Override
+            protected Book doInBackground(Void... voids) {
+                booksDatabase.bookDao().update(item);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Book shoppingItem) {
+                Log.d("MainActivity", "Book edited successfully");
+                loadItemsInBackground();
+            }
+        }.execute();
+    }
+
 
     @Override
     public void onBookItemCreated(final Book newItem) {
@@ -123,4 +160,6 @@ public class BookListActivity extends AppCompatActivity implements BooksAdapter.
             }
         }.execute();
     }
+
+
 }

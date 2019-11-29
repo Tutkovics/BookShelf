@@ -22,13 +22,6 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
     private final List<Book> books;
     private BookItemClickListener listener;
 
-/*    public BooksAdapter(BookItemClickListener listener){
-        this.listener = listener;
-        books = new ArrayList<>();
-
-        books = new DBHelper(this).getUserBooks();
-    }*/
-
     public BooksAdapter(BookItemClickListener listener){
          this.listener = listener;
          books = new ArrayList<>();
@@ -63,6 +56,10 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
 
     public interface BookItemClickListener{
         void onItemChanged(Book item);
+
+        void onItemDeleted(Book item);
+
+        void onItemEdit(Book item);
     }
 
 
@@ -71,6 +68,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
         TextView bookAuthorTextView;
         TextView bookTitleTextView;
         ImageButton removeButton;
+        ImageButton editButton;
 
         Book item;
 
@@ -81,6 +79,22 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
             bookAuthorTextView = itemView.findViewById(R.id.BookAuthor);
             bookTitleTextView = itemView.findViewById(R.id.BookTitle);
             removeButton = itemView.findViewById(R.id.BookItemRemoveButton);
+            editButton = itemView.findViewById(R.id.BookEditButton);
+
+            removeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    books.remove(item);
+                    listener.onItemDeleted(item);
+                }
+            });
+
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemEdit(item);
+                }
+            });
 
             readedCheckBox.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
                 @Override

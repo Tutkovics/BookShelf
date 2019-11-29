@@ -24,10 +24,37 @@ public class newBookItemDialog extends DialogFragment {
     private EditText reviewEditText;
     private CheckBox alreadyReadedCheckBox;
 
+    private String title;
+    private String author;
+    private String description;
+    private String review;
+    private boolean readed;
+    private Book book;
+
     public String userTag;
+
+    public newBookItemDialog(Book book){
+        if(book != null){
+            this.title = book.title;
+            this.author = book.author;
+            this.review = book.review;
+            this.description = book.description;
+            this.readed = book.isReaded;
+            this.book = book;
+        } else {
+            this.title = "";
+            this.author = "";
+            this.review = "";
+            this.description = "";
+            this.readed = false;
+            this.book = null;
+        }
+    }
 
     public interface NewBookItemDialogListener {
         void onBookItemCreated(Book newItem);
+
+        void onItemEdit(Book book);
     }
 
     private NewBookItemDialogListener listener;
@@ -46,19 +73,42 @@ public class newBookItemDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new AlertDialog.Builder(requireContext())
-                .setTitle(R.string.new_book_item)
-                .setView(getContentView())
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (isValid()) {
-                            listener.onBookItemCreated(getBook());
+        Dialog alert;
+        if(this.book == null){
+             alert = new AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.new_book_item)
+                    .setView(getContentView())
+                    .setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if (isValid()) {
+                                listener.onBookItemCreated(getBook());
+                            }
                         }
-                    }
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .create();
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .create();
+
+        } else {
+             alert = new AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.new_book_item)
+                    .setView(getContentView())
+
+                    .setPositiveButton(R.string.edit,new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if (isValid()) {
+                                listener.onBookItemCreated(getBook());
+                            }
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .create();
+        }
+
+        return alert;
+
+
     }
 
     private View getContentView() {
@@ -67,13 +117,20 @@ public class newBookItemDialog extends DialogFragment {
         authorEditText = contentView.findViewById(R.id.BookAuthorEditText);
         descriptionEditText = contentView.findViewById(R.id.BookDescriptionEditText);
         reviewEditText = contentView.findViewById(R.id.ReviewEditText);
+        alreadyReadedCheckBox = contentView.findViewById(R.id.BookReaded);
+
+        titleEditText.setText(title);
+        authorEditText.setText(author);
+        descriptionEditText.setText(description);
+        reviewEditText.setText(review);
+        alreadyReadedCheckBox.setChecked(readed);
 
         //estimatedPriceEditText = contentView.findViewById(R.id.ShoppingItemEstimatedPriceEditText);
         //categorySpinner = contentView.findViewById(R.id.ShoppingItemCategorySpinner);
         //categorySpinner.setAdapter(new ArrayAdapter<>(requireContext(),
          //       android.R.layout.simple_spinner_dropdown_item,
           //      getResources().getStringArray(R.array.category_items)));
-        alreadyReadedCheckBox = contentView.findViewById(R.id.BookReaded);
+
 
         return contentView;
     }
@@ -91,10 +148,6 @@ public class newBookItemDialog extends DialogFragment {
         b.review = reviewEditText.getText().toString();
         b.isReaded = alreadyReadedCheckBox.isChecked();
 
-        // todo get user tag
-/*        userTag = "562E5302";
-
-        b.userTag = userTag;*/
 
         return b;
     }

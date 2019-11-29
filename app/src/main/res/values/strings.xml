@@ -2,7 +2,8 @@
     <string name="app_name">BookShelf</string>
     <string name="title_activity_book_list">BookListActivity</string>
     <string name="new_book_item">New Book</string>
-    <string name="ok">Add</string>
+    <string name="create">New</string>
+    <string name="edit">Edit</string>
     <string name="cancel">Cancel</string>
     <string name="title">Title</string>
     <string name="author">Author</string>

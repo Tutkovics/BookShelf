@@ -26,7 +26,7 @@ import java.util.List;
 public class Profile extends AppCompatActivity {
 
     private TextView userTag;
-    private TextView userName;
+    //private TextView userName;
     private Button saveButton;
     private Button booksButton;
     private TextView registrationDate;
@@ -44,7 +44,7 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        userName = findViewById(R.id.userName);
+        //userName = findViewById(R.id.userName);
         userTag = findViewById(R.id.userTag);
         //saveButton = findViewById(R.id.btnSave);
         booksButton = findViewById(R.id.btnBooks);
@@ -70,7 +70,7 @@ public class Profile extends AppCompatActivity {
             String nfcTag = rs.getString(rs.getColumnIndex(DBHelper.USERS_COLUMN_TAG));
 
             registrationDate.setText(regDate);
-            userName.setText(name);
+            //userName.setText(name);
             userTag.setText(nfcTag);
 
 
@@ -125,6 +125,15 @@ public class Profile extends AppCompatActivity {
 
     }
 
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        loadItemsInBackground();
+
+    }
+
+
     private void loadItemsInBackground() {
         new AsyncTask<Void, Void, List<Book>>() {
 
@@ -154,6 +163,8 @@ public class Profile extends AppCompatActivity {
 
 
     }
+
+
 
 
 }
